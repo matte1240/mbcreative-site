@@ -172,23 +172,12 @@ code { font-family: var(--mono); }
 @keyframes noc-grow { from { transform: scaleY(.15) } to { transform: none } }
 @keyframes noc-orbit { to { stroke-dashoffset: -360 } }
 
-/* — image-slot placeholder (static, no upload UI) — */
-.img-slot {
-  position: relative;
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(127, 127, 127, .08);
-  color: inherit;
-  overflow: hidden;
+/* — homelab imagery — */
+.homelab-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: var(--color-bg);
 }
-.img-slot::after {
-  content: '';
-  position: absolute; inset: 0; pointer-events: none;
-  border: 1.5px dashed currentColor; opacity: .35;
-}
-.img-slot .img-slot-inner {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 6px; text-align: center; padding: 12px; box-sizing: border-box;
-}
-.img-slot svg { opacity: .45; }
-.img-slot .img-slot-cap { opacity: .75; font-size: 12px; max-width: 32ch; }

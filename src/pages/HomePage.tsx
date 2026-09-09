@@ -78,7 +78,7 @@ export function HomePage({ lang, goArch, goStatus }: HomePageProps) {
               </div>
             </div>
             <div style={{ position: 'relative', height: 170, borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)', marginTop: 12 }}>
-              <ImageSlot placeholder="Dettaglio ravvicinato: LED, porte, un cavo" />
+              <ImageSlot src="/images/homelab-detail.webp" alt={it ? 'Illustrazione: dettaglio di una porta Ethernet con cavo e LED verdi' : 'Illustration: Ethernet port close-up with a cable and green LEDs'} />
             </div>
             <p style={{ fontFamily: 'var(--mono)', fontSize: '10.5px', color: 'var(--dim)', margin: '9px 2px 0' }}>Due loop di controllo: Omni decide cosa <em>è</em> una macchina, Flux cosa gira sopra.</p>
           </div>
@@ -148,9 +148,9 @@ export function HomePage({ lang, goArch, goStatus }: HomePageProps) {
           </div>
           <figure style={{ margin: '16px 0 0' }}>
             <div style={{ position: 'relative', height: 'clamp(240px,32vw,380px)', borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
-              <ImageSlot placeholder="I tre nodi — foto orizzontale, meglio su fondo scuro" />
+              <ImageSlot src="/images/homelab-nodes.webp" alt={it ? 'Illustrazione di tre mini PC neri con illuminazione viola soffusa' : 'Illustration of three black mini PCs with subtle violet lighting'} />
             </div>
-            <figcaption style={{ fontFamily: 'var(--mono)', fontSize: '10.5px', marginTop: 7 }}>I tre OptiPlex come stanno oggi. Trascina qui la foto.</figcaption>
+            <figcaption style={{ fontFamily: 'var(--mono)', fontSize: '10.5px', marginTop: 7 }}>{it ? 'Tre nodi, un solo lab. Illustrazione generata con AI.' : 'Three nodes, one lab. AI-generated illustration.'}</figcaption>
           </figure>
           <p style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--dim)', margin: '14px 0 0' }}>Le porte 2.5GbE sono fissate per indirizzo hardware: entrambe le NIC prendevano DHCP sulla stessa /24 e Longhorn replicava sull'IP sbagliato, a 1 Gbps.</p>
         </section>

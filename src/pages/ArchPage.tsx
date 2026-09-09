@@ -170,9 +170,9 @@ export function ArchPage({ lang, showPostmortem, goHome, goStatus }: ArchPagePro
         </div>
         <figure style={{ margin: '26px 0 0' }}>
           <div style={{ position: 'relative', height: 'clamp(220px,26vw,320px)', borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
-            <ImageSlot placeholder="Il cablaggio: i sei DAC della mesh e le X540 sul retro" />
+            <ImageSlot src="/images/homelab-mesh.webp" alt={it ? 'Illustrazione del retro di tre nodi homelab e dei collegamenti di rete' : 'Illustration of three homelab nodes viewed from the back with network cabling'} />
           </div>
-          <figcaption style={{ fontFamily: 'var(--mono)', fontSize: '10.5px', marginTop: 7 }}>Sei cavi e nessuno switch 10G: la mesh vista da dietro.</figcaption>
+          <figcaption style={{ fontFamily: 'var(--mono)', fontSize: '10.5px', marginTop: 7 }}>{it ? 'Connessioni dietro le quinte. Illustrazione AI ispirata alla mesh, non uno schema di cablaggio.' : 'Connections behind the scenes. AI illustration inspired by the mesh, not a wiring diagram.'}</figcaption>
         </figure>
       </section>
 
