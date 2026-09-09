@@ -74,7 +74,7 @@ export function getServices(it: boolean) {
   const int = { exposure: 'internal', tagColor: 'color-mix(in srgb, #e9e9ed 62%, transparent)', tagBorder: 'var(--color-divider)' }
   const vip = { exposure: 'vip lan', tagColor: 'color-mix(in srgb, #e9e9ed 62%, transparent)', tagBorder: 'var(--color-divider)' }
   const rows: [string, string, string, typeof pub][] = [
-    ['Sito vetrina', 'mbcreative.cc', it ? 'Questa pagina: tre repliche nginx distribuite su nodi distinti, contenuto da un ConfigMap generato.' : 'This page: three nginx replicas spread across distinct nodes, content from a generated ConfigMap.', pub],
+    ['Sito vetrina', 'mbcreative.cc', it ? 'Questa pagina: tre repliche nginx distribuite su nodi distinti, servite da un’immagine costruita da questo repository.' : 'This page: three nginx replicas spread across distinct nodes, served from an image built by this repository.', pub],
     ['Home Assistant', 'homeassistant.mbcreative.cc', it ? 'Hub domotico con PVC Longhorn per /config. In container, non Home Assistant OS.' : 'Home automation hub with a Longhorn-backed PVC for /config. Container, not Home Assistant OS.', pub],
     ['Frigate', 'frigate.mbcreative.cc', it ? 'NVR con detection sull’iGPU UHD 630. Credenziali telecamere cifrate con SOPS.' : 'NVR with detection on the UHD 630 iGPU. Camera credentials encrypted with SOPS.', pub],
     ['Homepage', 'home.mbcreative.cc', it ? 'Dashboard del lab. Girava sul quarto nodo; ora si rischedula da sola.' : 'Lab dashboard. It ran on the fourth node; now it simply reschedules.', int],

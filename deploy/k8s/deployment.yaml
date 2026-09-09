@@ -1,0 +1,92 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: web
+spec:
+  replicas: 3
+  revisionHistoryLimit: 3
+  strategy:
+    rollingUpdate:
+      # The page is stateless and tiny, so a deploy costs nothing but a scheduling slot:
+      # surge one pod, retire one, and never drop below three serving replicas.
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      # The last thing the `restricted` Pod Security level asks for that the container
+      # securityContext below does not already give it. Without it the pod is rejected
+      # at admission, not merely warned about.
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      # One replica per node, so the page survives losing any single node.
+      #
+      # ScheduleAnyway, not DoNotSchedule. With three replicas over three nodes the
+      # scheduler puts one on each either way, so the strict version buys nothing -- and
+      # it can refuse to place a pod. During a Talos upgrade one node is cordoned, which
+      # leaves two schedulable domains for three replicas: DoNotSchedule would make the
+      # third unschedulable outright, the rollout would stall on a Pending pod, and the
+      # PodDisruptionBudget above would then block the next node's drain waiting for a
+      # replica that can never be placed.
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: web
+      containers:
+        - name: nginx
+          # Tag set by kustomization.yaml -- that file is the one place a deploy is
+          # written down. The bundle lives in the image rather than in a ConfigMap
+          # because Vite emits fingerprinted assets that a 1 MiB ConfigMap cannot hold
+          # and a hash suffix cannot version coherently.
+          image: ghcr.io/matte1240/mbcreative-site:main
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            # nginx writes its pid and its temp bodies; with a read-only root it needs
+            # somewhere to put them, and tmpfs keeps that out of the container layer.
+            - name: run
+              mountPath: /var/run
+            - name: cache
+              mountPath: /var/cache/nginx
+          # /healthz rather than /, so a probe answers for nginx itself and does not
+          # depend on the page being where the config expects it.
+          startupProbe:
+            httpGet: { path: /healthz, port: http }
+            periodSeconds: 2
+            failureThreshold: 15
+          readinessProbe:
+            httpGet: { path: /healthz, port: http }
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: { path: /healthz, port: http }
+            periodSeconds: 20
+          resources:
+            requests: { cpu: 10m, memory: 32Mi }
+            limits: { memory: 128Mi }
+          securityContext:
+            # Port 8080 and not 80 is what makes running unprivileged possible at all.
+            runAsNonRoot: true
+            runAsUser: 101
+            runAsGroup: 101
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      volumes:
+        - name: run
+          emptyDir: { medium: Memory }
+        - name: cache
+          emptyDir: { medium: Memory }

@@ -1,0 +1,91 @@
+---
+# Two Ingresses for one nginx, split by exposure. The split is the point: the catch-all
+# must not exist on the internet-facing entrypoints.
+#
+# A host-less rule matches *every* Host header on every entrypoint it is bound to. Bound
+# to the public pair, that would make Traefik answer 200 on the external VIP for names
+# that are not published at all -- so "not published" and "published" would look the
+# same from outside without reading the body. Confined to the internal pair, an
+# unpublished host gets a plain 404 from the external VIP, which is an honest answer to
+# "is this exposed?".
+#
+# The other half of that trade, before it costs someone an afternoon: on the *internal*
+# pair the catch-all is still a catch-all, so a LAN name whose own Ingress does not exist
+# yet is served this page rather than a 404. It looks like a DNS or routing fault and it
+# is neither -- it means that service is not deployed. `kubectl get ingress -A` answers
+# it in one line.
+#
+# Both the label and the annotation are set here, and they say the same thing twice on
+# purpose. In prox-lab the annotation is rendered from the label by
+# `components/exposure/`, applied once at `apps/prod`; a Flux Kustomization pointing at
+# *this* repository does not pass through that overlay, so the entrypoint names have to
+# be written out. They must stay in step with that component -- it remains the
+# definition of what internal and public mean, and prox-lab's CI checks the pair on
+# everything it renders.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+  namespace: web
+  labels:
+    # Internal only, and deliberately host-less: this is the default backend for the LAN
+    # VIP, so http://10.0.30.240/ serves the page with no DNS and no /etc/hosts entry.
+    # There can only be one of these, and it must never be `public`.
+    mbcreative.cc/exposure: internal
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+spec:
+  ingressClassName: traefik
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 80
+---
+# The published half. Same backend, but named, so the external entrypoints answer for
+# these hosts and nothing else.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-public
+  namespace: web
+  labels:
+    mbcreative.cc/exposure: public
+  annotations:
+    # All four, not just the external pair: the internal two keep LAN clients reaching
+    # the site directly through 10.0.30.240 instead of hairpinning out to the router and
+    # back in through 10.0.30.243.
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure,webext,websecureext
+spec:
+  ingressClassName: traefik
+  rules:
+    # Both names, because only one of them actually resolves. `*.mbcreative.cc` is a
+    # public wildcard pointing at the house, so `www` answers from anywhere; the apex has
+    # no A record of its own (a wildcard does not cover the zone apex). It is listed
+    # anyway so the page starts working the moment that record is added, and because the
+    # wildcard certificate Traefik serves already covers it.
+    - host: mbcreative.cc
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 80
+    - host: www.mbcreative.cc
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 80
