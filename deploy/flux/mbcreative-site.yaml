@@ -1,0 +1,42 @@
+---
+# Not applied from this repository -- this is the file to copy into prox-lab as
+# `clusters/prod/web.yaml`, which is what makes Flux reconcile `deploy/k8s/` from here.
+#
+# Two things have to happen together in that commit, or the cluster ends up with two
+# owners for the same objects: add this file, and drop `- ../base/web` (plus the
+# `apps/base/web/` directory) from prox-lab's `apps/prod/kustomization.yaml`. The
+# `apps` Kustomization prunes what it no longer renders, so the old ConfigMap-served
+# page is removed by the same reconcile that brings this one up.
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: mbcreative-site
+  namespace: flux-system
+spec:
+  interval: 10m
+  url: https://github.com/matte1240/mbcreative-site
+  ref:
+    # A branch, so a push to main is a deploy. Pin `tag:` instead if the site should
+    # move only when it is tagged -- the image tag in deploy/k8s/kustomization.yaml is
+    # then the only thing a release changes.
+    branch: main
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: web
+  namespace: flux-system
+spec:
+  # Same dependency the rest of the apps carry: the Ingress here needs the IngressClass
+  # that infra-configs settles, and MetalLB has to have handed Traefik its VIPs.
+  dependsOn:
+    - name: infra-configs
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
+  path: ./deploy/k8s
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: mbcreative-site

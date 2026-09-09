@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+  - pdb.yaml
+  - ingress.yaml
+
+# The deploy, in one field.
+#
+# `main` is what CI republishes on every push to the default branch, and it is the only
+# moving tag here. A deploy that is meant to be reproducible names an immutable one
+# instead -- CI publishes `sha-<short commit>` for every build -- so that rolling back is
+# reverting this commit rather than remembering what `main` pointed at last Tuesday.
+images:
+  - name: ghcr.io/matte1240/mbcreative-site
+    newTag: main

@@ -1,0 +1,9 @@
+.git
+.github
+node_modules
+dist
+deploy/k8s
+deploy/flux
+README.md
+*.local
+.DS_Store

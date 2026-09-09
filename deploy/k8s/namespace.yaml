@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: web
+  labels:
+    # The workload is restricted-compliant end to end: nginx on 8080 as uid 101, a
+    # read-only root filesystem, every capability dropped, seccomp RuntimeDefault.
+    # Enforced rather than warned, so a future edit that gives any of that up is
+    # rejected at admission instead of quietly accepted.
+    pod-security.kubernetes.io/enforce: restricted

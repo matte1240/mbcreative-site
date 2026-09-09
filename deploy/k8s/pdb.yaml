@@ -1,0 +1,14 @@
+---
+# Three replicas, one per node. Without this, draining two nodes in quick succession --
+# which is what a Talos upgrade does -- can take the page down even though a third
+# replica could have stayed up.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: web
+  namespace: web
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: web

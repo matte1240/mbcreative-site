@@ -1,0 +1,117 @@
+name: ci
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+# Nothing here writes to the repository or to the registry.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      # `tsc -b && vite build` -- the same command the image build runs, so a type
+      # error surfaces here rather than half a minute into a docker build.
+      - run: npm run build
+
+  manifests:
+    runs-on: ubuntu-latest
+    # Same versions prox-lab validates with, and the same Kubernetes version the
+    # cluster runs: a manifest that renders here renders there.
+    env:
+      KUSTOMIZE_VERSION: "5.7.1"
+      KUBECONFORM_VERSION: "0.7.0"
+      KUBE_VERSION: "1.37.0"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install kustomize and kubeconform
+        run: |
+          set -euo pipefail
+          curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_amd64.tar.gz" \
+            | tar xz -C /usr/local/bin kustomize
+          curl -fsSL "https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" \
+            | tar xz -C /usr/local/bin kubeconform
+
+      - name: Build and validate deploy/k8s
+        # If it does not build here it will not reconcile on the cluster either, and
+        # Flux would report the failure minutes after the push instead.
+        run: |
+          set -euo pipefail
+          kustomize build deploy/k8s > rendered.yaml
+          kubeconform -strict -summary -ignore-missing-schemas \
+            -kubernetes-version "${KUBE_VERSION}" rendered.yaml
+
+      - name: Exposure -- every Ingress declares it, and the annotation agrees
+        # The label is the readable half (`kubectl get ingress -A -l
+        # mbcreative.cc/exposure=public` answers "what is on the internet?"), the
+        # annotation is the half Traefik acts on. They are written out twice in
+        # ingress.yaml because Flux reconciles this path without prox-lab's
+        # components/exposure overlay, so nothing else keeps them in step.
+        #
+        # The host rule is the load-bearing part: a host-less rule bound to the public
+        # entrypoints answers the internet for every name nobody published.
+        run: |
+          python3 - <<'PY'
+          import sys, yaml
+          LABEL = "mbcreative.cc/exposure"
+          ANN = "traefik.ingress.kubernetes.io/router.entrypoints"
+          EXPECTED = {
+              "internal": "web,websecure",
+              "public": "web,websecure,webext,websecureext",
+          }
+          bad, seen = [], 0
+          for d in yaml.safe_load_all(open("rendered.yaml")):
+              if not isinstance(d, dict) or d.get("kind") != "Ingress":
+                  continue
+              meta = d.get("metadata", {})
+              name = f"{meta.get('namespace','?')}/{meta.get('name','?')}"
+              scope = (meta.get("labels") or {}).get(LABEL)
+              if scope not in EXPECTED:
+                  bad.append(f"{name}: {LABEL} is {scope!r}, expected one of {sorted(EXPECTED)}")
+                  continue
+              seen += 1
+              ann = (meta.get("annotations") or {}).get(ANN)
+              if ann != EXPECTED[scope]:
+                  bad.append(f"{name}: labelled {scope!r} but entrypoints are {ann!r}, expected {EXPECTED[scope]!r}")
+              if scope != "public":
+                  continue
+              spec = d.get("spec") or {}
+              if spec.get("defaultBackend"):
+                  bad.append(f"{name}: public, with a defaultBackend that catches every unpublished host")
+              for rule in (spec.get("rules") or []):
+                  if not (rule or {}).get("host"):
+                      bad.append(f"{name}: public, with a host-less rule that catches every unpublished host")
+          if not seen:
+              bad.append("no Ingress found in the rendered output")
+          print("\n".join(bad) or f"exposure declared consistently on {seen} Ingresses")
+          sys.exit(1 if bad else 0)
+          PY
+
+  image:
+    # A build, not a push -- the publish workflow is the only thing that writes to the
+    # registry. This is here so a broken Dockerfile fails on the pull request.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
