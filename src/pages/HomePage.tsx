@@ -16,37 +16,37 @@ export function HomePage({ lang, goArch, goStatus }: HomePageProps) {
 
   return (
     <div>
-      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 28px' }}>
-        <section style={{ display: 'flex', flexWrap: 'wrap', gap: 48, alignItems: 'center', padding: '74px 0 58px' }}>
-          <div style={{ flex: '1 1 400px', minWidth: 0, animation: 'noc-rise .7s ease both' }}>
+      <div className="page-container">
+        <section className="hero">
+          <div className="hero-copy">
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
               <span style={{ width: 24, height: 1, background: 'var(--color-accent)', flex: 'none' }}></span>
-              <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>
                 Bare-metal Kubernetes · GitOps · self-hosted
               </span>
             </div>
             {it ? (
               <div>
                 <h1 style={{ fontSize: 'clamp(34px,4vw,52px)', lineHeight: 1.06, letterSpacing: '-.028em', margin: '0 0 20px', textWrap: 'pretty' }}>
-                  Tre Dell in uno sgabuzzino,<br />gestiti come un cluster<br />di produzione.
+                  Tre Dell in uno sgabuzzino,{' '}<br />gestiti come un cluster{' '}<br />di produzione.
                 </h1>
                 <p style={{ fontSize: '16.5px', lineHeight: 1.6, maxWidth: '54ch', color: 'color-mix(in srgb, var(--color-text) 76%, transparent)', margin: '0 0 26px' }}>
-                  Sono Matte. <strong style={{ fontWeight: 500, color: 'var(--color-text)' }}>prox-lab</strong> è un cluster Kubernetes su tre OptiPlex 3060: Talos Linux immutabile gestito da Omni, storage Longhorn su una mesh 10GbE senza switch, Flux che riconcilia tutto da un solo repository. Dopo il bootstrap, l'unico modo per cambiare qualcosa è un <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>git push</code>.
+                  Sono Matte. <strong style={{ fontWeight: 500, color: 'var(--color-text)' }}>prox-lab</strong> è un cluster Kubernetes su tre OptiPlex 3060: Talos Linux immutabile gestito da Omni, storage Longhorn su una mesh 10GbE senza switch, Flux che riconcilia tutto da un solo repository. Dopo il bootstrap, l'unico modo per cambiare qualcosa è un <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>git push</code>.
                 </p>
               </div>
             ) : (
               <div>
                 <h1 style={{ fontSize: 'clamp(34px,4vw,52px)', lineHeight: 1.06, letterSpacing: '-.028em', margin: '0 0 20px', textWrap: 'pretty' }}>
-                  Three Dells in a closet,<br />run like a production<br />cluster.
+                  Three Dells in a closet,{' '}<br />run like a production{' '}<br />cluster.
                 </h1>
                 <p style={{ fontSize: '16.5px', lineHeight: 1.6, maxWidth: '54ch', color: 'color-mix(in srgb, var(--color-text) 76%, transparent)', margin: '0 0 26px' }}>
-                  I'm Matte. <strong style={{ fontWeight: 500, color: 'var(--color-text)' }}>prox-lab</strong> is a Kubernetes cluster on three OptiPlex 3060s: immutable Talos Linux managed by Omni, Longhorn storage over a switchless 10GbE mesh, Flux reconciling everything from one repository. After bootstrap, the only way anything changes is a <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>git push</code>.
+                  I'm Matte. <strong style={{ fontWeight: 500, color: 'var(--color-text)' }}>prox-lab</strong> is a Kubernetes cluster on three OptiPlex 3060s: immutable Talos Linux managed by Omni, Longhorn storage over a switchless 10GbE mesh, Flux reconciling everything from one repository. After bootstrap, the only way anything changes is a <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>git push</code>.
                 </p>
               </div>
             )}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
               <button className="btn btn-primary" onClick={goArch}>
-                Architettura
+                {it ? 'Esplora il lab' : 'Explore the lab'}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
               </button>
               <a className="btn btn-secondary" href="https://github.com/matte1240/prox-lab" target="_blank" rel="noopener">
@@ -56,15 +56,15 @@ export function HomePage({ lang, goArch, goStatus }: HomePageProps) {
             </div>
           </div>
 
-          <div style={{ flex: '1 1 400px', minWidth: 0, animation: 'noc-rise .7s .1s ease both' }}>
-            <div style={{ borderRadius: 'var(--radius-lg)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-md)', overflow: 'hidden' }}>
+          <div className="hero-visual">
+            <div className="hero-terminal">
               <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '9px 13px', borderBottom: '1px solid var(--color-divider)' }}>
                 <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-neutral-700)' }}></span>
                 <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-neutral-700)' }}></span>
                 <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-neutral-700)' }}></span>
-                <span style={{ marginLeft: 6, fontFamily: 'var(--mono)', fontSize: '10.5px', color: 'var(--dim)' }}>omnictl · talos-default</span>
+                <span style={{ marginLeft: 6, fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--dim)' }}>omnictl · talos-default</span>
               </div>
-              <div style={{ padding: '16px 15px 18px', fontFamily: 'var(--mono)', fontSize: '12.5px', lineHeight: 1.9 }}>
+              <div className="terminal-body">
                 <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', width: 0, animation: 'noc-type .5s .3s steps(24) forwards' }}><span style={{ color: 'var(--color-accent)' }}>➜</span> omnictl get machines</div>
                 <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', width: 0, animation: 'noc-type .35s .9s steps(38) forwards', color: 'var(--dim)' }}>talos-1  Running   10.0.30.101</div>
                 <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', width: 0, animation: 'noc-type .35s 1.2s steps(38) forwards', color: 'var(--dim)' }}>talos-2  Running   10.0.30.102</div>
@@ -80,16 +80,16 @@ export function HomePage({ lang, goArch, goStatus }: HomePageProps) {
             <div style={{ position: 'relative', height: 170, borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)', marginTop: 12 }}>
               <ImageSlot src="/images/homelab-detail.webp" alt={it ? 'Illustrazione: dettaglio di una porta Ethernet con cavo e LED verdi' : 'Illustration: Ethernet port close-up with a cable and green LEDs'} />
             </div>
-            <p style={{ fontFamily: 'var(--mono)', fontSize: '10.5px', color: 'var(--dim)', margin: '9px 2px 0' }}>Due loop di controllo: Omni decide cosa <em>è</em> una macchina, Flux cosa gira sopra.</p>
+            <p style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--dim)', margin: '9px 2px 0' }}>Due loop di controllo: Omni decide cosa <em>è</em> una macchina, Flux cosa gira sopra.</p>
           </div>
         </section>
       </div>
 
-      <section style={{ background: 'var(--color-section)', backgroundImage: 'radial-gradient(120% 150% at 10% -30%, var(--color-section-glow) 0%, transparent 60%)', borderTop: '1px solid color-mix(in srgb, var(--color-section-ghost) 55%, transparent)', borderBottom: '1px solid color-mix(in srgb, var(--color-section-ghost) 55%, transparent)' }}>
-        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '32px 28px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(178px,1fr))', gap: 26 }}>
+      <section data-reveal style={{ background: 'var(--color-section)', backgroundImage: 'radial-gradient(120% 150% at 10% -30%, var(--color-section-glow) 0%, transparent 60%)', borderTop: '1px solid color-mix(in srgb, var(--color-section-ghost) 55%, transparent)', borderBottom: '1px solid color-mix(in srgb, var(--color-section-ghost) 55%, transparent)' }}>
+        <div className="page-container metrics-grid">
           {metrics.map((m) => (
-            <div key={m.label} style={{ minWidth: 0 }}>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.13em', textTransform: 'uppercase', color: 'color-mix(in srgb, #e9e9ed 58%, transparent)' }}>{m.label}</div>
+            <div key={m.label} className="metric" style={{ minWidth: 0 }}>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.13em', textTransform: 'uppercase', color: 'color-mix(in srgb, #e9e9ed 58%, transparent)' }}>{m.label}</div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, margin: '7px 0 9px' }}>
                 <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: 31, letterSpacing: '-.03em', lineHeight: 1 }}>{m.value}</span>
                 <span style={{ fontSize: 12, color: 'color-mix(in srgb, #e9e9ed 52%, transparent)' }}>{m.unit}</span>
@@ -104,27 +104,27 @@ export function HomePage({ lang, goArch, goStatus }: HomePageProps) {
         </div>
       </section>
 
-      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 28px' }}>
-        <section style={{ padding: '70px 0 0' }}>
+      <div className="page-container">
+        <section data-reveal style={{ padding: '70px 0 0' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 14 }}>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>01 — Le macchine</span>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>01 — Le macchine</span>
             <span style={{ flex: 1, height: 1, background: 'linear-gradient(to right,var(--color-divider),transparent)' }}></span>
           </div>
           {it ? (
             <div>
               <h2 style={{ fontSize: 32, margin: '0 0 10px', letterSpacing: '-.022em' }}>Tre nodi identici, tutti schedulabili</h2>
-              <p style={{ maxWidth: '64ch', color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: '0 0 30px' }}>Tre membri etcd e non quattro: quattro hanno bisogno di tre voti per il quorum e tollerano comunque un solo guasto. <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>allowSchedulingOnControlPlanes</code> è ciò che li rende utili.</p>
+              <p style={{ maxWidth: '64ch', color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: '0 0 30px' }}>Tre membri etcd e non quattro: quattro hanno bisogno di tre voti per il quorum e tollerano comunque un solo guasto. <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>allowSchedulingOnControlPlanes</code> è ciò che li rende utili.</p>
             </div>
           ) : (
             <div>
               <h2 style={{ fontSize: 32, margin: '0 0 10px', letterSpacing: '-.022em' }}>Three identical nodes, all schedulable</h2>
-              <p style={{ maxWidth: '64ch', color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: '0 0 30px' }}>Three etcd members and not four: four need three votes for quorum and still tolerate only one failure. <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>allowSchedulingOnControlPlanes</code> is what makes them useful.</p>
+              <p style={{ maxWidth: '64ch', color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: '0 0 30px' }}>Three etcd members and not four: four need three votes for quorum and still tolerate only one failure. <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>allowSchedulingOnControlPlanes</code> is what makes them useful.</p>
             </div>
           )}
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,280px),1fr))', gap: 16 }}>
             {nodes.map((n) => (
-              <div key={n.name} style={{ borderRadius: 'var(--radius-md)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-sm)', padding: '16px 16px 14px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div key={n.name} className="lab-card" data-reveal style={{ borderRadius: 'var(--radius-md)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-sm)', padding: '16px 16px 14px', display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                   <span style={{ fontFamily: 'var(--mono)', fontSize: 14, color: 'var(--color-text)' }}>{n.name}</span>
                   <span style={{ flex: 1 }}></span>
@@ -137,7 +137,7 @@ export function HomePage({ lang, goArch, goStatus }: HomePageProps) {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
                   {n.specs.map((s) => (
-                    <div key={s.k} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, padding: '5px 0', borderBottom: '1px solid color-mix(in srgb, var(--color-text) 7%, transparent)', fontSize: '12.5px' }}>
+                    <div key={s.k} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, padding: '5px 0', borderBottom: '1px solid color-mix(in srgb, var(--color-text) 7%, transparent)', fontSize: 14 }}>
                       <span style={{ color: 'var(--dim)', flex: 'none' }}>{s.k}</span>
                       <span style={{ fontFamily: 'var(--mono)', textAlign: 'right', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{s.v}</span>
                     </div>
@@ -146,35 +146,35 @@ export function HomePage({ lang, goArch, goStatus }: HomePageProps) {
               </div>
             ))}
           </div>
-          <figure style={{ margin: '16px 0 0' }}>
+          <figure className="lab-photo" data-reveal style={{ margin: '16px 0 0' }}>
             <div style={{ position: 'relative', height: 'clamp(240px,32vw,380px)', borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
               <ImageSlot src="/images/homelab-nodes.webp" alt={it ? 'Illustrazione di tre mini PC neri con illuminazione viola soffusa' : 'Illustration of three black mini PCs with subtle violet lighting'} />
             </div>
-            <figcaption style={{ fontFamily: 'var(--mono)', fontSize: '10.5px', marginTop: 7 }}>{it ? 'Tre nodi, un solo lab. Illustrazione generata con AI.' : 'Three nodes, one lab. AI-generated illustration.'}</figcaption>
+            <figcaption style={{ fontFamily: 'var(--mono)', fontSize: 12, marginTop: 7 }}>{it ? 'Tre nodi, un solo lab. Illustrazione generata con AI.' : 'Three nodes, one lab. AI-generated illustration.'}</figcaption>
           </figure>
-          <p style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--dim)', margin: '14px 0 0' }}>Le porte 2.5GbE sono fissate per indirizzo hardware: entrambe le NIC prendevano DHCP sulla stessa /24 e Longhorn replicava sull'IP sbagliato, a 1 Gbps.</p>
+          <p style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--dim)', margin: '14px 0 0' }}>Le porte 2.5GbE sono fissate per indirizzo hardware: entrambe le NIC prendevano DHCP sulla stessa /24 e Longhorn replicava sull'IP sbagliato, a 1 Gbps.</p>
         </section>
 
-        <section style={{ padding: '70px 0 0' }}>
+        <section data-reveal style={{ padding: '70px 0 0' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 14 }}>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>02 — Esposizione</span>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>02 — Esposizione</span>
             <span style={{ flex: 1, height: 1, background: 'linear-gradient(to right,var(--color-divider),transparent)' }}></span>
           </div>
           {it ? (
             <div>
               <h2 style={{ fontSize: 32, margin: '0 0 10px', letterSpacing: '-.022em' }}>Interno per applicazione, non per convenzione</h2>
-              <p style={{ maxWidth: '64ch', color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: '0 0 30px' }}>Due VIP, due coppie di entrypoint Traefik e una etichetta per Ingress. Il VIP interno porta <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>loadBalancerSourceRanges</code> limitato a RFC1918: un port forward puntato all'indirizzo sbagliato fallisce chiuso.</p>
+              <p style={{ maxWidth: '64ch', color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: '0 0 30px' }}>Due VIP, due coppie di entrypoint Traefik e una etichetta per Ingress. Il VIP interno porta <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>loadBalancerSourceRanges</code> limitato a RFC1918: un port forward puntato all'indirizzo sbagliato fallisce chiuso.</p>
             </div>
           ) : (
             <div>
               <h2 style={{ fontSize: 32, margin: '0 0 10px', letterSpacing: '-.022em' }}>Internal by enforcement, not convention</h2>
-              <p style={{ maxWidth: '64ch', color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: '0 0 30px' }}>Two VIPs, two pairs of Traefik entrypoints, one label per Ingress. The internal VIP carries <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>loadBalancerSourceRanges</code> covering RFC1918 only, so a port forward aimed at the wrong address fails closed.</p>
+              <p style={{ maxWidth: '64ch', color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: '0 0 30px' }}>Two VIPs, two pairs of Traefik entrypoints, one label per Ingress. The internal VIP carries <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>loadBalancerSourceRanges</code> covering RFC1918 only, so a port forward aimed at the wrong address fails closed.</p>
             </div>
           )}
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18, alignItems: 'stretch' }}>
-            <div style={{ flex: '1 1 330px', minWidth: 0, borderRadius: 'var(--radius-md)', background: '#12141f', boxShadow: 'var(--shadow-sm)', padding: 16, fontFamily: 'var(--mono)', fontSize: '12.5px', lineHeight: 1.75, overflow: 'auto' }}>
-              <div style={{ color: 'var(--dim)', fontSize: 10, letterSpacing: '.1em', marginBottom: 10 }}>COMPONENTS/EXPOSURE — UNA SOLA DEFINIZIONE</div>
+            <div style={{ flex: '1 1 330px', minWidth: 0, borderRadius: 'var(--radius-md)', background: '#12141f', boxShadow: 'var(--shadow-sm)', padding: 16, fontFamily: 'var(--mono)', fontSize: 14, lineHeight: 1.75, overflow: 'auto' }}>
+              <div style={{ color: 'var(--dim)', fontSize: 12, letterSpacing: '.1em', marginBottom: 10 }}>COMPONENTS/EXPOSURE — UNA SOLA DEFINIZIONE</div>
               <div><span style={{ color: 'var(--color-neutral-500)' }}>metadata:</span></div>
               <div>&nbsp;&nbsp;<span style={{ color: 'var(--color-neutral-500)' }}>labels:</span></div>
               <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: 'var(--color-accent-300)' }}>mbcreative.cc/exposure</span>: internal <span style={{ color: 'var(--color-neutral-600)' }}># 10.0.30.240</span></div>
@@ -218,9 +218,9 @@ export function HomePage({ lang, goArch, goStatus }: HomePageProps) {
           </div>
         </section>
 
-        <section style={{ padding: '70px 0 0' }}>
+        <section data-reveal style={{ padding: '70px 0 0' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 14 }}>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>03 — Workload</span>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>03 — Workload</span>
             <span style={{ flex: 1, height: 1, background: 'linear-gradient(to right,var(--color-divider),transparent)' }}></span>
           </div>
           {it ? (
@@ -235,47 +235,47 @@ export function HomePage({ lang, goArch, goStatus }: HomePageProps) {
             </div>
           )}
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(250px,1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,250px),1fr))', gap: 12 }}>
             {services.map((s) => (
               <div key={s.host} style={{ borderRadius: 'var(--radius-md)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-sm)', padding: 14, display: 'flex', flexDirection: 'column', gap: 9 }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8 }}>
                   <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: 15 }}>{s.name}</span>
                   <span style={{ fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '.08em', textTransform: 'uppercase', padding: '2px 6px', borderRadius: 4, border: `1px solid ${s.tagBorder}`, color: s.tagColor, flex: 'none' }}>{s.exposure}</span>
                 </div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--color-accent-300)', wordBreak: 'break-all' }}>{s.host}</div>
-                <p style={{ margin: 0, fontSize: '12.5px', lineHeight: 1.5, color: 'color-mix(in srgb, var(--color-text) 66%, transparent)' }}>{s.desc}</p>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--color-accent-300)', wordBreak: 'break-all' }}>{s.host}</div>
+                <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: 'color-mix(in srgb, var(--color-text) 66%, transparent)' }}>{s.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section style={{ padding: '70px 0 0' }}>
+        <section data-reveal style={{ padding: '70px 0 0' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 14 }}>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>04 — Regole</span>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>04 — Regole</span>
             <span style={{ flex: 1, height: 1, background: 'linear-gradient(to right,var(--color-divider),transparent)' }}></span>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(255px,1fr))', gap: 0, borderTop: '1px solid var(--color-divider)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,255px),1fr))', gap: 0, borderTop: '1px solid var(--color-divider)' }}>
             {principles.map((p) => (
               <div key={p.num} style={{ padding: '22px 22px 24px 0', borderBottom: '1px solid var(--color-divider)' }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.1em', color: 'var(--color-accent)', marginBottom: 10 }}>{p.num}</div>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.1em', color: 'var(--color-accent)', marginBottom: 10 }}>{p.num}</div>
                 <h4 style={{ fontSize: 17, margin: '0 0 7px' }}>{p.title}</h4>
-                <p style={{ margin: 0, fontSize: 13, lineHeight: 1.55, color: 'color-mix(in srgb, var(--color-text) 66%, transparent)' }}>{p.body}</p>
+                <p style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: 'color-mix(in srgb, var(--color-text) 66%, transparent)' }}>{p.body}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section style={{ padding: '64px 0 0' }}>
+        <section data-reveal style={{ padding: '64px 0 0' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, alignItems: 'center', justifyContent: 'space-between', padding: '26px 0', borderTop: '1px solid var(--color-divider)', borderBottom: '1px solid var(--color-divider)' }}>
             <div style={{ minWidth: 0 }}>
               <h3 style={{ margin: '0 0 5px', fontSize: 21 }}>Il quarto nodo, e il disco che l'ha ucciso</h3>
-              <p style={{ margin: 0, fontSize: '13.5px', color: 'var(--dim)', maxWidth: '60ch' }}>194.185 cicli di accensione, 22.168 ore, 410 spegnimenti anomali — e SMART che diceva PASSED fino all'ultimo.</p>
+              <p style={{ margin: 0, fontSize: 14, color: 'var(--dim)', maxWidth: '60ch' }}>194.185 cicli di accensione, 22.168 ore, 410 spegnimenti anomali — e SMART che diceva PASSED fino all'ultimo.</p>
             </div>
             <button className="btn btn-primary" onClick={goArch}>Leggi il post-mortem</button>
           </div>
         </section>
 
-        <footer style={{ display: 'flex', flexWrap: 'wrap', gap: 20, justifyContent: 'space-between', padding: '34px 0 44px', fontSize: '12.5px', color: 'var(--dim)' }}>
+        <footer className="site-footer" style={{ display: 'flex', flexWrap: 'wrap', gap: 20, justifyContent: 'space-between', padding: '34px 0 44px', fontSize: 14, color: 'var(--dim)' }}>
           <div>
             <div style={{ fontFamily: 'var(--mono)' }}>mbcreative.cc · prox-lab</div>
             <div style={{ marginTop: 4 }}>Deploy continuo con Flux v2 · 3 repliche nginx su nodi distinti</div>

@@ -16,9 +16,9 @@ export function ArchPage({ lang, showPostmortem, goHome, goStatus }: ArchPagePro
   const smart = getSmart(it)
 
   return (
-    <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 28px' }}>
-      <section style={{ padding: '64px 0 0', animation: 'noc-rise .6s ease both' }}>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>Architettura</span>
+    <div className="page-container">
+      <section data-reveal style={{ padding: '64px 0 0', animation: 'noc-rise .6s ease both' }}>
+        <span style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>Architettura</span>
         {it ? (
           <div>
             <h1 style={{ fontSize: 'clamp(32px,3.4vw,44px)', margin: '14px 0 14px', letterSpacing: '-.026em', lineHeight: 1.08 }}>Due loop di controllo,<br />perché possiedono strati diversi.</h1>
@@ -32,8 +32,9 @@ export function ArchPage({ lang, showPostmortem, goHome, goStatus }: ArchPagePro
         )}
       </section>
 
-      <section style={{ padding: '38px 0 0' }}>
-        <div style={{ borderRadius: 'var(--radius-lg)', background: 'linear-gradient(180deg,#1c1e2e,#181a28)', boxShadow: 'var(--shadow-sm)', padding: '12px 8px 6px', overflow: 'hidden' }}>
+      <section data-reveal style={{ padding: '38px 0 0' }}>
+        <p className="diagram-hint">{it ? 'Scorri il diagramma per esplorare il cluster →' : 'Swipe through the cluster diagram →'}</p>
+        <div className="architecture-diagram" role="region" aria-label={it ? 'Diagramma del cluster, scorrimento orizzontale' : 'Cluster diagram, horizontally scrollable'} tabIndex={0}>
           <svg viewBox="0 0 1080 420" style={{ width: '100%', height: 'auto', display: 'block' }}>
             <defs>
               <pattern id="mbgrid" width="30" height="30" patternUnits="userSpaceOnUse">
@@ -117,9 +118,9 @@ export function ArchPage({ lang, showPostmortem, goHome, goStatus }: ArchPagePro
         </div>
       </section>
 
-      <section style={{ padding: '60px 0 0' }}>
+      <section data-reveal style={{ padding: '60px 0 0' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 14 }}>
-          <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>Storage</span>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>Storage</span>
           <span style={{ flex: 1, height: 1, background: 'linear-gradient(to right,var(--color-divider),transparent)' }}></span>
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 26, alignItems: 'center' }}>
@@ -127,14 +128,14 @@ export function ArchPage({ lang, showPostmortem, goHome, goStatus }: ArchPagePro
             {it ? (
               <div>
                 <h2 style={{ fontSize: 29, margin: '0 0 10px', letterSpacing: '-.022em' }}>Una mesh 10GbE senza switch</h2>
-                <p style={{ color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: '0 0 14px' }}>Ogni nodo ha una X540-AT2 a due porte, bondata in <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>mode: broadcast</code> con MTU 9000: tre nodi collegati direttamente fra loro, nessuno switch 10G da comprare. Longhorn replica su <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>10.0.40.0/24</code> tramite un attachment ipvlan su bond0.</p>
-                <p style={{ color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: 0 }}>Solo i nodi con un disco libero tengono repliche. Un <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>UserVolumeConfig</code> formatta l'NVMe di scorta e Talos lo monta su <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>/var/mnt/longhorn</code>, così un volume impazzito non riempie il filesystem su cui vive etcd.</p>
+                <p style={{ color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: '0 0 14px' }}>Ogni nodo ha una X540-AT2 a due porte, bondata in <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>mode: broadcast</code> con MTU 9000: tre nodi collegati direttamente fra loro, nessuno switch 10G da comprare. Longhorn replica su <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>10.0.40.0/24</code> tramite un attachment ipvlan su bond0.</p>
+                <p style={{ color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: 0 }}>Solo i nodi con un disco libero tengono repliche. Un <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>UserVolumeConfig</code> formatta l'NVMe di scorta e Talos lo monta su <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>/var/mnt/longhorn</code>, così un volume impazzito non riempie il filesystem su cui vive etcd.</p>
               </div>
             ) : (
               <div>
                 <h2 style={{ fontSize: 29, margin: '0 0 10px', letterSpacing: '-.022em' }}>A switchless 10GbE mesh</h2>
-                <p style={{ color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: '0 0 14px' }}>Each node has a dual-port X540-AT2 bonded in <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>mode: broadcast</code> at MTU 9000: three nodes wired directly to each other, no 10G switch to buy. Longhorn replicates over <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>10.0.40.0/24</code> through an ipvlan attachment on bond0.</p>
-                <p style={{ color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: 0 }}>Only nodes with a spare disk hold replicas. A <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>UserVolumeConfig</code> formats the spare NVMe and Talos mounts it at <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>/var/mnt/longhorn</code>, so a runaway volume cannot fill the filesystem etcd lives on.</p>
+                <p style={{ color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: '0 0 14px' }}>Each node has a dual-port X540-AT2 bonded in <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>mode: broadcast</code> at MTU 9000: three nodes wired directly to each other, no 10G switch to buy. Longhorn replicates over <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>10.0.40.0/24</code> through an ipvlan attachment on bond0.</p>
+                <p style={{ color: 'color-mix(in srgb, var(--color-text) 72%, transparent)', margin: 0 }}>Only nodes with a spare disk hold replicas. A <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>UserVolumeConfig</code> formats the spare NVMe and Talos mounts it at <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>/var/mnt/longhorn</code>, so a runaway volume cannot fill the filesystem etcd lives on.</p>
               </div>
             )}
           </div>
@@ -172,73 +173,75 @@ export function ArchPage({ lang, showPostmortem, goHome, goStatus }: ArchPagePro
           <div style={{ position: 'relative', height: 'clamp(220px,26vw,320px)', borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
             <ImageSlot src="/images/homelab-mesh.webp" alt={it ? 'Illustrazione del retro di tre nodi homelab e dei collegamenti di rete' : 'Illustration of three homelab nodes viewed from the back with network cabling'} />
           </div>
-          <figcaption style={{ fontFamily: 'var(--mono)', fontSize: '10.5px', marginTop: 7 }}>{it ? 'Connessioni dietro le quinte. Illustrazione AI ispirata alla mesh, non uno schema di cablaggio.' : 'Connections behind the scenes. AI illustration inspired by the mesh, not a wiring diagram.'}</figcaption>
+          <figcaption style={{ fontFamily: 'var(--mono)', fontSize: 12, marginTop: 7 }}>{it ? 'Connessioni dietro le quinte. Illustrazione AI ispirata alla mesh, non uno schema di cablaggio.' : 'Connections behind the scenes. AI illustration inspired by the mesh, not a wiring diagram.'}</figcaption>
         </figure>
       </section>
 
-      <section style={{ padding: '60px 0 0' }}>
+      <section data-reveal style={{ padding: '60px 0 0' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 20 }}>
-          <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>Indirizzi</span>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>Indirizzi</span>
           <span style={{ flex: 1, height: 1, background: 'linear-gradient(to right,var(--color-divider),transparent)' }}></span>
         </div>
+        <div className="table-scroll" role="region" aria-label={it ? 'Indirizzi di rete' : 'Network addresses'} tabIndex={0}>
         <table className="table">
           <thead><tr><th>Che cosa</th><th>Indirizzo</th><th style={{ textAlign: 'right' }}>Come è assegnato</th></tr></thead>
           <tbody>
             {addresses.map((a) => (
               <tr key={a.what}>
                 <td>{a.what}</td>
-                <td style={{ fontFamily: 'var(--mono)', fontSize: '12.5px', color: 'var(--color-accent-300)' }}>{a.addr}</td>
-                <td style={{ textAlign: 'right', fontSize: '12.5px', color: 'var(--dim)' }}>{a.how}</td>
+                <td style={{ fontFamily: 'var(--mono)', fontSize: 14, color: 'var(--color-accent-300)' }}>{a.addr}</td>
+                <td style={{ textAlign: 'right', fontSize: 14, color: 'var(--dim)' }}>{a.how}</td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       </section>
 
-      <section style={{ padding: '60px 0 0' }}>
+      <section data-reveal style={{ padding: '60px 0 0' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 6 }}>
-          <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>Scelte</span>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.13em', textTransform: 'uppercase', color: 'var(--color-accent-300)' }}>Scelte</span>
           <span style={{ flex: 1, height: 1, background: 'linear-gradient(to right,var(--color-divider),transparent)' }}></span>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,300px),1fr))', gap: 0 }}>
           {choices.map((c) => (
             <div key={c.title} style={{ padding: '22px 26px 24px 0', borderBottom: '1px solid var(--color-divider)' }}>
               <h4 style={{ fontSize: '16.5px', margin: '0 0 8px' }}>{c.title}</h4>
-              <p style={{ margin: 0, fontSize: 13, lineHeight: 1.58, color: 'color-mix(in srgb, var(--color-text) 68%, transparent)' }}>{c.body}</p>
+              <p style={{ margin: 0, fontSize: 14, lineHeight: 1.58, color: 'color-mix(in srgb, var(--color-text) 68%, transparent)' }}>{c.body}</p>
             </div>
           ))}
         </div>
       </section>
 
       {showPostmortem && (
-        <section style={{ padding: '56px 0 0' }}>
+        <section data-reveal style={{ padding: '56px 0 0' }}>
           <div style={{ borderRadius: 'var(--radius-lg)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-md)', overflow: 'hidden' }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', padding: '14px 20px', borderBottom: '1px solid var(--color-divider)' }}>
-              <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--warn)' }}>Post-mortem</span>
-              <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--dim)', marginLeft: 'auto' }}>2026-09-06 · SPCC M.2 · AA000000000000001614</span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--warn)' }}>Post-mortem</span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--dim)', marginLeft: 'auto' }}>2026-09-06 · SPCC M.2 · AA000000000000001614</span>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 30, padding: '24px 20px 26px' }}>
               <div style={{ flex: '1 1 340px', minWidth: 0 }}>
                 <h3 style={{ margin: '0 0 12px', fontSize: 22, letterSpacing: '-.015em' }}>C'era una quarta macchina, e il suo disco l'ha uccisa.</h3>
-                <p style={{ fontSize: 14, lineHeight: 1.62, color: 'color-mix(in srgb, var(--color-text) 74%, transparent)', margin: '0 0 12px' }}>Un mini PC Ryzen con una sola porta 1GbE e un unico NVMe su cui Talos si era installato: non poteva contribuire né storage né banda a Longhorn, e si era unito come worker. La partizione <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>EPHEMERAL</code> si è corrotta due volte in 24 ore su due filesystem formattati da zero in modo indipendente. Poi il disco ha smesso di fingere: <code style={{ color: 'var(--warn)', fontSize: 13 }}>input/output error</code> su ogni lettura e scrittura, nessun kubelet, e un upgrade del cluster bloccato a <code style={{ color: 'var(--dim)', fontSize: 13 }}>updating machines 1/4</code>.</p>
-                <p style={{ fontSize: 14, lineHeight: 1.62, color: 'color-mix(in srgb, var(--color-text) 74%, transparent)', margin: 0 }}>È stata rimossa da <code style={{ color: 'var(--color-accent-300)', fontSize: 13 }}>omni/cluster.yaml</code>, che restituisce la macchina al pool di Omni con il suo SideroLink intatto: rimetterla dentro è un documento, se il disco viene sostituito. Perderla non è costato niente di cui il cluster dipenda.</p>
+                <p style={{ fontSize: 14, lineHeight: 1.62, color: 'color-mix(in srgb, var(--color-text) 74%, transparent)', margin: '0 0 12px' }}>Un mini PC Ryzen con una sola porta 1GbE e un unico NVMe su cui Talos si era installato: non poteva contribuire né storage né banda a Longhorn, e si era unito come worker. La partizione <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>EPHEMERAL</code> si è corrotta due volte in 24 ore su due filesystem formattati da zero in modo indipendente. Poi il disco ha smesso di fingere: <code style={{ color: 'var(--warn)', fontSize: 14 }}>input/output error</code> su ogni lettura e scrittura, nessun kubelet, e un upgrade del cluster bloccato a <code style={{ color: 'var(--dim)', fontSize: 14 }}>updating machines 1/4</code>.</p>
+                <p style={{ fontSize: 14, lineHeight: 1.62, color: 'color-mix(in srgb, var(--color-text) 74%, transparent)', margin: 0 }}>È stata rimossa da <code style={{ color: 'var(--color-accent-300)', fontSize: 14 }}>omni/cluster.yaml</code>, che restituisce la macchina al pool di Omni con il suo SideroLink intatto: rimetterla dentro è un documento, se il disco viene sostituito. Perderla non è costato niente di cui il cluster dipenda.</p>
               </div>
-              <div style={{ flex: '0 1 280px', minWidth: 240 }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '.1em', color: 'var(--dim)', marginBottom: 12 }}>SMART: PASSED — I CONTATORI DEL DISCO, NO</div>
+              <div style={{ flex: '0 1 280px', minWidth: 0 }}>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.1em', color: 'var(--dim)', marginBottom: 12 }}>SMART: PASSED — I CONTATORI DEL DISCO, NO</div>
                 {smart.map((s) => (
                   <div key={s.k} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, padding: '9px 0', borderBottom: '1px solid color-mix(in srgb, var(--color-text) 8%, transparent)' }}>
-                    <span style={{ fontSize: '12.5px', color: 'var(--dim)' }}>{s.k}</span>
+                    <span style={{ fontSize: 14, color: 'var(--dim)' }}>{s.k}</span>
                     <span style={{ fontFamily: 'var(--mono)', fontSize: 16, color: s.c }}>{s.v}</span>
                   </div>
                 ))}
-                <p style={{ margin: '12px 0 0', fontSize: '11.5px', lineHeight: 1.5, color: 'var(--dim)' }}>Una storia che indica una mapping table FTL danneggiata, non celle consumate.</p>
+                <p style={{ margin: '12px 0 0', fontSize: 12, lineHeight: 1.5, color: 'var(--dim)' }}>Una storia che indica una mapping table FTL danneggiata, non celle consumate.</p>
               </div>
             </div>
           </div>
         </section>
       )}
 
-      <footer style={{ display: 'flex', flexWrap: 'wrap', gap: 20, justifyContent: 'space-between', padding: '40px 0 44px', marginTop: 44, borderTop: '1px solid var(--color-divider)', fontSize: '12.5px', color: 'var(--dim)' }}>
+      <footer className="site-footer" style={{ display: 'flex', flexWrap: 'wrap', gap: 20, justifyContent: 'space-between', padding: '40px 0 44px', marginTop: 44, borderTop: '1px solid var(--color-divider)', fontSize: 14, color: 'var(--dim)' }}>
         <span style={{ fontFamily: 'var(--mono)' }}>mbcreative.cc · prox-lab</span>
         <div style={{ display: 'flex', gap: 18 }}>
           <button onClick={goHome} style={{ background: 'none', border: 0, padding: 0, color: 'var(--color-accent)', font: 'inherit', cursor: 'pointer' }}>Home</button>
