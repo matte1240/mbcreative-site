@@ -45,11 +45,11 @@ spec:
               app: web
       containers:
         - name: nginx
-          # `main` is kept for readability; its immutable digest is the deployed version.
-          # Renovate opens a PR whenever that tag points at a new published image. The bundle lives in the image rather than in a ConfigMap
+          # Tag set by kustomization.yaml -- that file is the one place a deploy is
+          # written down. The bundle lives in the image rather than in a ConfigMap
           # because Vite emits fingerprinted assets that a 1 MiB ConfigMap cannot hold
           # and a hash suffix cannot version coherently.
-          image: ghcr.io/matte1240/mbcreative-site:main@sha256:031e83d3e2d0dae1758018f34949f9c7bbeff1c2ff83a43d3aadaef941c143cd
+          image: ghcr.io/matte1240/mbcreative-site:main
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
