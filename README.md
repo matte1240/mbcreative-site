@@ -73,3 +73,13 @@ PodDisruptionBudget so a Talos upgrade cannot take the page down.
 - The three photo slots (`src/components/ImageSlot.tsx`) are placeholders — no real photos wired in yet.
 - Status-page metrics/gauges/probes are still the mockup's illustrative sample data (`src/data.ts`), not a live connection to the cluster's uptime-kuma.
 - The image is built and published by CI; the cluster manifests live in `deploy/k8s/` and are validated on every push (`kustomize build` + `kubeconform`).
+
+
+## Aggiornamenti e deploy
+
+Ogni push applicativo su `main` pubblica `ghcr.io/matte1240/mbcreative-site:main` e
+un tag immutabile per commit. Il Deployment conserva il tag leggibile `main`, fissato
+al digest OCI effettivamente distribuito. Renovate controlla quel digest: quando
+l'immagine cambia apre una PR; il merge modifica il Pod template e Flux esegue il
+rolling update. Le modifiche del solo manifest di deploy non ricostruiscono l'immagine,
+così il digest appena approvato non diventa immediatamente obsoleto.
