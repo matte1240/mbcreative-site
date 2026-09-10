@@ -3,12 +3,6 @@ name: publish-image
 on:
   push:
     branches: [main]
-    # A digest-only deploy commit must not publish a different image and make its own
-    # digest stale immediately. Source, dependency and Dockerfile changes still build.
-    paths-ignore:
-      - "deploy/k8s/deployment.yaml"
-      - "deploy/k8s/kustomization.yaml"
-      - "renovate.json5"
     tags: ["v*"]
   workflow_dispatch:
 
